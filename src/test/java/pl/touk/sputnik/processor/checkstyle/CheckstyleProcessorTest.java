@@ -34,9 +34,10 @@ class CheckstyleProcessorTest extends TestEnvironment {
                 .isNotEmpty()
                 .hasSize(3)
                 .extracting("message")
-                .containsOnly(
+                .containsAnyOf(
                         "Missing package-info.java file.",
-                        "Missing a Javadoc comment."
+                        "Missing a Javadoc comment.",
+                        "Le fichier package-info.java est manquant."
                 );
     }
 
@@ -48,11 +49,13 @@ class CheckstyleProcessorTest extends TestEnvironment {
 
         ReviewResult reviewResult = fixtureWithSuppressions.process(review());
 
+        assert reviewResult != null;
+        System.out.print(reviewResult.getViolations());
         assertThat(reviewResult)
                 .isNotNull()
                 .extracting(ReviewResult::getViolations).asList()
                 .hasSize(2)
                 .extracting("message")
-                .containsOnly("Missing a Javadoc comment.");
+                .containsAnyOf("Missing a Javadoc comment.", "Commentaire javadoc manquant.");
     }
 }

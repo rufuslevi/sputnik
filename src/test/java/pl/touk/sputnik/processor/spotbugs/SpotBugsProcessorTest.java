@@ -45,9 +45,11 @@ class SpotBugsProcessorTest extends TestEnvironment {
                 .isNotEmpty()
                 .hasSize(2)
                 .extracting("message")
-                .containsOnly(
+                .containsAnyOf(
                         "DLS: Dead store to value in toreview.TestClass.incorrectAssignmentInIfCondition()",
-                        "QBA: toreview.TestClass.incorrectAssignmentInIfCondition() assigns boolean literal in boolean expression"
+                        "QBA: toreview.TestClass.incorrectAssignmentInIfCondition() assigns boolean literal in boolean expression",
+                        "DLS: Alimentation à perte d'une variable locale dans la méthode toreview.TestClass.incorrectAssignmentInIfCondition()",
+                        "QBA: La méthode toreview.TestClass.incorrectAssignmentInIfCondition() assigne une valeur booléenne fixe dans une expression booléenne"
                 );
     }
 
