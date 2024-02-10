@@ -1,12 +1,7 @@
 package pl.touk.sputnik.configuration;
 
 import lombok.Getter;
-import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.CommandLineParser;
-import org.apache.commons.cli.DefaultParser;
-import org.apache.commons.cli.Option;
-import org.apache.commons.cli.Options;
-import org.apache.commons.cli.ParseException;
+import org.apache.commons.cli.*;
 import org.jetbrains.annotations.NotNull;
 
 public class CliWrapper {
@@ -26,6 +21,7 @@ public class CliWrapper {
 
         localOptions.addOption(buildOption(CliOption.CHANGE_ID, true, false));
         localOptions.addOption(buildOption(CliOption.REVISION_ID, true, false));
+        localOptions.addOption(buildOption(CliOption.VERSION, false, false));
 
         localOptions.addOption(buildOption(CliOption.PULL_REQUEST_ID, true, false));
         localOptions.addOption(buildOption(CliOption.API_KEY, true, false));
@@ -38,10 +34,26 @@ public class CliWrapper {
         return localOptions;
     }
 
-    @NotNull
     public CommandLine parse(@NotNull String[] args) throws ParseException {
         CommandLineParser parser = new DefaultParser();
-        return parser.parse(options, args);
+
+        CommandLine parsedOptions = null;
+        try {
+            parsedOptions = parser.parse(options, args);
+        } catch (ParseException e) {
+            boolean found = false;
+            for (String elem : args) {
+                if (elem.equals("--version")) {
+                    found = true;
+                    break;
+                }
+            }
+            if (!found) {
+                throw e;
+            }
+        }
+
+        return parsedOptions;
     }
 
     @NotNull
