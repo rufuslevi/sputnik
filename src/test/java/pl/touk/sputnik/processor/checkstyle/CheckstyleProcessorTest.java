@@ -49,13 +49,11 @@ class CheckstyleProcessorTest extends TestEnvironment {
 
         ReviewResult reviewResult = fixtureWithSuppressions.process(review());
 
-        assert reviewResult != null;
-        System.out.print(reviewResult.getViolations());
         assertThat(reviewResult)
                 .isNotNull()
                 .extracting(ReviewResult::getViolations).asList()
                 .hasSize(2)
                 .extracting("message")
-                .containsAnyOf("Missing a Javadoc comment.", "Commentaire javadoc manquant.");
+                .containsOnly("Missing a Javadoc comment.");
     }
 }
