@@ -1,6 +1,7 @@
 package pl.touk.sputnik;
 
-import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.*;
+import org.codehaus.groovy.tools.shell.Command;
 import org.junit.jupiter.api.Test;
 import pl.touk.sputnik.configuration.CliOption;
 import pl.touk.sputnik.configuration.CliWrapper;
@@ -35,6 +36,15 @@ class CliOptionsTest {
         CommandLine commandLine = fixture.parse(args);
 
         cliAssert(commandLine).hasOption(CliOption.PULL_REQUEST_ID.getCommandLineParam()).withValue(SAMPLE_PULL_REQUEST_ID);
+    }
+
+    @Test
+    void shouldToggleTheFlag() throws Exception {
+        String[] args = {"--version"};
+
+        CommandLine commandLine = fixture.parse(args);
+
+        assertThat(commandLine).isNull();
     }
 
     private String[] toArgs(String argsFormat, String... substitutions) {
